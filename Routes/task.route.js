@@ -1,6 +1,6 @@
 import express  from "express";
 import { body } from "express-validator";
-import { findAll, task } from "../Controllers/taskController.js";
+import { deleteAll, deleteTask, findAll, findOne, task, upadteTask } from "../Controllers/taskController.js";
 import { validationResults } from "../Middlewares/valTask.js";
 
 const router = express.Router()
@@ -20,5 +20,13 @@ router.post('/add', [
 )
 
 router.get('/findall', findAll)
+
+router.get('/findone', findOne)
+
+router.put('/updatetask', upadteTask)
+
+router.delete('/deletetask', deleteTask)
+
+router.delete('/deleteall', deleteAll)
 
 export default router;
