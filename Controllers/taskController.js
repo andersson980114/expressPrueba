@@ -2,10 +2,16 @@ import {Task} from '../Models/taskModel.js'
 
 //add
 export const task = async (req, res) => {
-    const {name, description} = req.body
-    const task =  new Task({name, description})
-    await task.save()
-    res.json({ok: 'Nueva tarea agregada'})
+    try {
+        const {name, description} = req.body
+        const task =  new Task({name, description})
+        await task.save()
+        return res.status(200).json({ok: 'Nueva tarea agregada'})
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({error: "error de servidor"})
+    }
 }
 
 //find all
@@ -64,16 +70,16 @@ export const upadteTask=   async (req, res) => {
 
 //delete task
 export const deleteTask=   async (req, res) => {
-    const {_id} = req.body
+    const _id = req.params.id;
     try {
         const task = await Task.findById(_id)  
         //tarea no encontrada
-        if(!task)
-            return res.status(400).json({error: "Tarea  no encontrada, no se pudo eliminar"}) 
+        if(!task) 
+            return res.status(400).json({error: "Tarea "+_id+"  no encontrada, no se pudo eliminar "}) 
         
         //tarea eliminada
-        await Task.findByIdAndRemove(_id)   
-        return res.json({ok: 'delete task'})
+        await Task.findByIdAndRemove(_id)    
+        return res.json({ok: 'deleted task'})
   
     } catch (error) {
         console.log(error)
