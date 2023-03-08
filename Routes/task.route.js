@@ -25,7 +25,7 @@ router.get('/findone', findOne)
 
 router.put('/updatetask', upadteTask)
 
-router.delete('/deletetask', deleteTask)
+router.delete('/deletetask/:id', deleteTask)
 
 router.delete('/deleteall', deleteAll)
 
