@@ -1,9 +1,12 @@
+//controladores se encarga de las querys en la db
 import {Task} from '../Models/taskModel.js'
 
 //add
 export const task = async (req, res) => {
     try {
+        //destructurar el body
         const {name, description} = req.body
+        //crear y guardar la tarea
         const task =  new Task({name, description})
         await task.save()
         return res.status(200).json({ok: 'Nueva tarea agregada'})
@@ -17,13 +20,14 @@ export const task = async (req, res) => {
 //find all
 export const findAll =   async (req, res) => {
     try {
+        //traer todo con find() o findall()
         const tasks = await Task.find() 
-        //no hay tareas
+        //si no hay tareas se notifica por consola
         if(!tasks)
             return res.status(400).json({error: "No hay tareas registradas"})
         
         //tareas obtenidas
-        return res.json({tasks})
+        return res.status(200).json({tasks})
 
     } catch (error) {
         console.log(error)
@@ -33,14 +37,16 @@ export const findAll =   async (req, res) => {
 
 //findOne
 export const findOne =   async (req, res) => {
-    const {_id} = req.body
+    //obtener el id por ruta
+    const _id = req.params.id;
     try {
+        //buscar la tarea por id
         const task = await Task.findById(_id)  
-        //tarea no encontrada
+       //si no hay tareas se notifica por consola
         if(!task)
             return res.status(400).json({error: "Tarea  no encontrada"}) 
         //tarea encontrada
-        return res.json({task})
+        return res.status(200).json({task})
   
     } catch (error) {
         console.log(error)
@@ -50,17 +56,19 @@ export const findOne =   async (req, res) => {
 
 //Update task
 export const upadteTask=   async (req, res) => {
+    //destructurar el body
     const {_id, name, description} = req.body
     try {
+        //verificar que exista la tarea
         const task = await Task.findById(_id)  
-        //tarea no encontrada
+        //si no hay tareas se notifica por consola
         if(!task)
             return res.status(400).json({error: "Tarea  no encontrada, no se pudo modificar"}) 
         
         //tarea modificada
         await Task.findByIdAndUpdate(_id, {name, description})  
         task.save()
-        return res.json({ok:'tarea modificada'})
+        return res.status(200).json({ok:'tarea modificada'})
   
     } catch (error) {
         console.log(error)
@@ -72,8 +80,9 @@ export const upadteTask=   async (req, res) => {
 export const deleteTask=   async (req, res) => {
     const _id = req.params.id;
     try {
+        //verificar que la tarea existe
         const task = await Task.findById(_id)  
-        //tarea no encontrada
+       //si no hay tareas se notifica por consola
         if(!task) 
             return res.status(400).json({error: "Tarea "+_id+"  no encontrada, no se pudo eliminar "}) 
         
@@ -91,8 +100,9 @@ export const deleteTask=   async (req, res) => {
 //delete all task
 export const deleteAll =   async (req, res) => { 
     try {
+        //verificar que existan tareas
         const tasks = await Task.find() 
-        //no hay tareas
+       //si no hay tareas se notifica por consola
         if(!tasks)
             return res.status(400).json({error: "No hay tareas registradas"})
         

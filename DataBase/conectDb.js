@@ -1,3 +1,4 @@
+//conectarse a la base de datos
 import mongoose from "mongoose";
 
 try {

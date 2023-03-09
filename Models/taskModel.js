@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-
+//crear modelos
+//es recomendable un modelo por archivo
 const taskSchema = new mongoose.Schema({
     name:{
         type: String,
